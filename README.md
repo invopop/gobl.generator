@@ -20,8 +20,34 @@ Run the generate command with the `-h` to ensure everything is working and see t
 
 By default, the generate command will use the `data/schema` directory as a source for data, and output Ruby source code into the `build/ruby` path.
 
-If for example you want to build the Markdown output from a gobl repo directly and send to the output to the documentation project, run:
+Ensure all the GOBL JSON Schema files are available by manually copying the base GOBL project's `build/schemas` path to the `data/schemas` path in this repository. Schemas are _.gitignored_, and you must copy them every time you want to update the generated code:
 
 ```bash
+rm -rf ./data/schemas
+cp -r ../gobl/build/schemas ./data
+```
+
+Alternatively you can define the input path to directly use a schemas directory:
+
+```bash
+./bin/generate -i ../gobl/build/schemas
+```
+
+You can also output the resulting files to the directory of your choosing:
+
+```bash
+./bin/generate -i ../gobl/build/schemas -o ../gobl.ruby/lib/gobl
+```
+
+Files from a previous export that are not longer needed will *not be deleted automatically*. If the destination mixes generated with handwritten code, use the following find and grep command *before* generating to remove all generated code:
+
+```bash
+find ../gobl.ruby/lib -name "*.rb" -exec grep -l "Generated with GOBL" {} \; | xargs rm
+```
+
+This generator also supports Markdown output:
+
+```bash
+rm -rf ../gobl.docs/draft-0
 ./bin/generate -l markdown -i ../gobl/build/schemas -o ../gobl.docs/draft-0
 ```
