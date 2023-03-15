@@ -7,17 +7,38 @@ module Generators
       protected
 
       def additional_content
-        table = Terminal::Table.new
-        table.headings = %w[Property Type Req. Description]
-        table.style = { border: :markdown }
-        table.rows = attributes
-        table.to_s
+        out = []
+        out << properties_table
+        out << constants_tables if constants.any?
+        out.join("\n")
+      end
+
+      def properties_table
+        props = Terminal::Table.new
+        props.headings = %w[Title Property Type Req. Description]
+        props.style = { border: :markdown }
+        props.rows = attributes
 
         <<~EOFMOD
         ## Properties
 
-        #{table.to_s}
+        #{props.to_s}
         EOFMOD
+      end
+
+      def constants_tables
+        constants.map do |const|
+          table = Terminal::Table.new
+          table.headings = %w[Value Description]
+          table.style = { border: :markdown }
+          table.rows = const.enum.map { |key, desc| [(key.blank? ? "" : "`#{key}`"), desc] }
+
+          <<~EOFCONST
+            ## #{const.title} Values
+
+            #{table.to_s}
+          EOFCONST
+        end.compact.join("\n")
       end
 
       def attributes
@@ -26,11 +47,16 @@ module Generators
 
       def attribute(name, property)
         [
+          property.title,
           "`#{name}`",
           type_string(property),
           !schema.optional?(name) ? 'true' : '',
           property.description&.split&.join(" "),
         ]
+      end
+
+      def constants
+        @constants ||= schema.properties.values.select(&:enum?)
       end
     end
   end
