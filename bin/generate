@@ -16,7 +16,7 @@ OptionParser.new do |opt|
 end.parse!
 
 schema_path = (options.input_path || 'data/schemas')
-unless File.exists?(schema_path)
+unless File.exist?(schema_path)
   puts "Schema path #{schema_path} does not exist"
   exit 1
 end
