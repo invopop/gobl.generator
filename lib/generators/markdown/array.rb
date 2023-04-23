@@ -6,7 +6,7 @@ module Generators
     class Array < Struct
       def module_content
         <<~EOFMOD
-        An array of `#{type_string(schema.items)}`
+        An array of #{type_string(schema.items)}
 
         #{"#{schema.description}" if schema.description.present?}
         EOFMOD
