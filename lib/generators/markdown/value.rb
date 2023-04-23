@@ -33,7 +33,7 @@ module Generators
             .composition
             &.entries
             &.filter(&:const?)
-            &.to_h { |e| [e.const, e.description] }
+            &.to_h { |e| [e.const, e.description.presence || e.title] }
       end
 
       def enum?
