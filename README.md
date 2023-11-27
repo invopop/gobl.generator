@@ -36,7 +36,7 @@ Alternatively you can define the input path to directly use a schemas directory:
 You can also output the resulting files to the directory of your choosing:
 
 ```bash
-./bin/generate -i ../gobl/build/schemas -o ../gobl.ruby/lib/gobl
+./bin/generate -i ../gobl/build/schemas -o ../gobl.ruby/lib/generated/gobl
 ```
 
 Files from a previous export that are not longer needed will *not be deleted automatically*. If the destination mixes generated with handwritten code, use the following find and grep command *before* generating to remove all generated code:
