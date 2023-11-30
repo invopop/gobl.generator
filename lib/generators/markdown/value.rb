@@ -4,7 +4,6 @@ module Generators
   class Markdown
     # Base generator of a json schema of type nil or string
     class Value < Struct
-
       def additional_content
         enum_constant
       end
@@ -13,31 +12,31 @@ module Generators
         return unless enum?
 
         table = Terminal::Table.new
-        table.headings = %w[Value Description]
+        table.headings = %w[Value Title Description]
         table.style = { border: :markdown }
-        table.rows = enum_hash.map do |key, value|
-          [key.blank? ? "": "`#{key}`", value]
+        table.rows = enum_rows.map do |row|
+          [row.const.blank? ? '' : "`#{row.const}`", row.title, row.description]
         end
         table.to_s
 
         <<~EOFCONST
           ## Values
 
-          #{table.to_s}
+          #{table}
         EOFCONST
       end
 
-      def enum_hash
-        @enum_hash ||=
+      def enum_rows
+        @enum_rows ||=
           schema
-            .composition
+          .composition
             &.entries
             &.filter(&:const?)
-            &.to_h { |e| [e.const, e.description.presence || e.title] }
+        # &.to_h { |e| [e.const, e.description.presence || e.title] }
       end
 
       def enum?
-        enum_hash.present?
+        enum_rows.present?
       end
 
       def strict_enum?
