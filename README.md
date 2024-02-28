@@ -24,19 +24,19 @@ Ensure all the GOBL JSON Schema files are available by manually copying the base
 
 ```bash
 rm -rf ./data/schemas
-cp -r ../gobl/build/schemas ./data
+cp -r ../gobl/data/schemas ./data
 ```
 
 Alternatively you can define the input path to directly use a schemas directory:
 
 ```bash
-./bin/generate -i ../gobl/build/schemas
+./bin/generate -i ../gobl/data/schemas
 ```
 
 You can also output the resulting files to the directory of your choosing:
 
 ```bash
-./bin/generate -i ../gobl/build/schemas -o ../gobl.ruby/lib/generated/gobl
+./bin/generate -i ../gobl/data/schemas -o ../gobl.ruby/lib/generated/gobl
 ```
 
 Files from a previous export that are not longer needed will *not be deleted automatically*. If the destination mixes generated with handwritten code, use the following find and grep command *before* generating to remove all generated code:
@@ -49,5 +49,5 @@ This generator also supports Markdown output:
 
 ```bash
 rm -rf ../gobl.docs/draft-0
-./bin/generate -l markdown -i ../gobl/build/schemas -o ../gobl.docs/draft-0
+./bin/generate -l markdown -i ../gobl/data/schemas -o ../gobl.docs/draft-0
 ```
