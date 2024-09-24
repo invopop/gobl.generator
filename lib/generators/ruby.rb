@@ -19,6 +19,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.acronym 'DSig'
   inflect.acronym 'ID' # Go always uses ID
   inflect.acronym 'CBC'
+  inflect.acronym 'ISO'
 end
 
 module Generators
