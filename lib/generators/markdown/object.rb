@@ -31,7 +31,7 @@ module Generators
           table = Terminal::Table.new
           table.headings = %w[Value Description]
           table.style = { border: :markdown }
-          table.rows = const.enum.map { |key, desc| [(key.blank? ? "" : "`#{key}`"), desc] }
+          table.rows = const.enum.map { |key, desc| [(key.blank? ? "" : "`#{key}`"), desc&.to_s&.gsub(/[\r\n]+/, ' ')&.strip] }
 
           <<~EOFCONST
             ## #{const.title} Values
