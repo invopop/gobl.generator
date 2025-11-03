@@ -8,22 +8,32 @@ require_relative '../lib/generator'
 
 require 'optparse'
 require 'ostruct'
+require 'active_support/all'
 
 options = OpenStruct.new
 OptionParser.new do |opt|
-  opt.on('-i', '--input PATH', 'Source of the GOBL schema (default data/schemas)') { |o| options.input_path = o }
+  opt.on('-i', '--input PATH', 'Source of the GOBL schema') { |o| options.input_path = o }
   opt.on('-l', '--lang LANGUAGE', 'The language to generate (default ruby)') { |o| options.lang = o }
-  opt.on('-o', '--output PATH', 'Where to output the results (default build/LANGUAGE)') { |o| options.output_path = o }
+  opt.on('-o', '--output PATH', 'Where to output the results') { |o| options.output_path = o }
 end.parse!
 
-schema_path = (options.input_path || 'data/schemas')
+schema_path = options.input_path
+unless schema_path
+  puts 'Error: -i/--input is required'
+  exit 1
+end
 unless File.exist?(schema_path)
   puts "Schema path #{schema_path} does not exist"
   exit 1
 end
 
-lang = (options.lang.presence || "ruby").to_sym
-output_path = options.output_path || "build/#{lang}"
+output_path = options.output_path
+unless output_path
+  puts 'Error: -o/--output is required'
+  exit 1
+end
+
+lang = (options.lang.presence || 'ruby').to_sym
 
 generator = Generator.new(path: schema_path, lang: lang)
 generator.export_to(output_path)

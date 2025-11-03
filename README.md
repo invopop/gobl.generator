@@ -18,22 +18,7 @@ Run the generate command with the `-h` to ensure everything is working and see t
 ./bin/generate -h
 ```
 
-By default, the generate command will use the `data/schema` directory as a source for data, and output Ruby source code into the `build/ruby` path.
-
-Ensure all the GOBL JSON Schema files are available by manually copying the base GOBL project's `build/schemas` path to the `data/schemas` path in this repository. Schemas are _.gitignored_, and you must copy them every time you want to update the generated code:
-
-```bash
-rm -rf ./data/schemas
-cp -r ../gobl/data/schemas ./data
-```
-
-Alternatively you can define the input path to directly use a schemas directory:
-
-```bash
-./bin/generate -i ../gobl/data/schemas
-```
-
-You can also output the resulting files to the directory of your choosing:
+You must provide the input schema files and the output directory of your choosing:
 
 ```bash
 ./bin/generate -i ../gobl/data/schemas -o ../gobl.ruby/lib/generated/gobl
